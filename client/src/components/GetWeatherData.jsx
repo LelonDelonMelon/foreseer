@@ -3,7 +3,7 @@ import axios from "axios";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-
+import date from "../util/getUserTime";
 import sunnyGif from "../assets/icons8-sun.gif";
 import lightRainGif from "../assets/icons8-light-rain.gif";
 
@@ -13,16 +13,16 @@ const settings = {
   speed: 600,
   slidesToShow: 11,
   slidesToScroll: 4,
-  centerMode: true,
+  centerMode: false,
   centerPadding: "120px",
   responsive: [
     {
       breakpoint: 1024,
       settings: {
-        slidesToShow: 3,
+        slidesToShow: 7,
         slidesToScroll: 3,
         infinite: true,
-        dots: false,
+        dots: true,
       },
     },
     {
@@ -42,11 +42,15 @@ const settings = {
     },
   ],
 };
+
 const GetWeatherData = (props) => {
   const [timeStamps, setTimeStamps] = useState([]); //96 values
   const [temperatures, setTemperatures] = useState([]); // 96 values
   const [userIndex, setUserIndex] = useState(0);
 
+
+  const getDate = date;
+  console.log("Get date: ",getDate);
   let userTimezone;
   if (
     typeof Intl !== "undefined" &&
@@ -58,8 +62,9 @@ const GetWeatherData = (props) => {
   }
 
   let currentDate = new Date();
-  const prettiedCurrent = currentDate.toISOString().slice(0, 10);
 
+  console.log("current time",currentDate);
+  const prettiedCurrentDate = currentDate.toISOString().slice(0, 10);
   let userTime = new Date();
   userTime.setTime(
     userTime.getTime() + userTime.getTimezoneOffset() * 60 * 1000
@@ -75,7 +80,6 @@ const GetWeatherData = (props) => {
   let userTimeString = userTime.slice(0, 5);
 
   console.log(userHour + 3);
-
   console.log("User Time", userTime);
 
   //console.log(props.endDate, props.startDate);
@@ -103,7 +107,7 @@ const GetWeatherData = (props) => {
 
   return (
     <div className="slider-container border-black rounded-sm my-8 ">
-      {props.startDate === prettiedCurrent && (
+      {props.startDate === prettiedCurrentDate && (
         <div className="current-weather">
           <img
             src={sunnyGif}
@@ -111,10 +115,10 @@ const GetWeatherData = (props) => {
             className="logo items-center mx-auto rounded-lg mb-2"
           />
           <p className="timestamp text-center text-lg font-bold text-yellow-300">
-            {timeStamps[userHour + 1]}
+            {getDate}
           </p>
           <p className="temperature text-center text-lg font-semibold mt-2  text-yellow-50">
-            {temperatures[0]}
+            {temperatures[0]+"°C"}
           </p>
         </div>
       )}
@@ -131,7 +135,7 @@ const GetWeatherData = (props) => {
               <p className="timestamp text-center">
                 {userIndex === idx ? userTimeString : value}
               </p>
-              <p className="temperature text-center ">{temperatures[idx]}</p>
+              <p className="temperature text-center ">{temperatures[idx]} °C</p>
             </div>
           );
         })}
