@@ -22,15 +22,16 @@ const settings = {
         slidesToShow: 7,
         slidesToScroll: 3,
         infinite: true,
-        dots: true,
+        dots: false,
       },
     },
     {
-      breakpoint: 600,
+      breakpoint: 700,
       settings: {
         slidesToShow: 2,
         slidesToScroll: 1,
         initialSlide: 2,
+        dots: false,
       },
     },
     {
@@ -38,6 +39,8 @@ const settings = {
       settings: {
         slidesToShow: 1,
         slidesToScroll: 1,
+        dots: false,
+
       },
     },
   ],
@@ -47,7 +50,7 @@ const GetWeatherData = (props) => {
   const [timeStamps, setTimeStamps] = useState([]); //96 values
   const [temperatures, setTemperatures] = useState([]); // 96 values
   const [userIndex, setUserIndex] = useState(0);
-
+  const [timeString,setUserTimeString] = useState("");
 
   const getDate = date;
   console.log("Get date: ",getDate);
@@ -79,12 +82,20 @@ const GetWeatherData = (props) => {
   let userMinute = parseInt(userTime.slice(3, 5));
   let userTimeString = userTime.slice(0, 5);
 
-  console.log(userHour + 3);
-  console.log("User Time", userTime);
+
 
   //console.log(props.endDate, props.startDate);
 
+  useEffect (()=> {
+    const interval = setInterval(()=> setUserTimeString(getDate),1000);
+    return ()=> {
+      clearInterval(interval);
+    }
+  },[])
+
   useEffect(() => {
+    setUserTimeString(getDate)
+    console.log(" Timestr: ", timeString);
     axios
       .get(
         `http://localhost:3004/api/weather?startDate=${props.startDate}&endDate=${props.endDate}`
@@ -103,7 +114,7 @@ const GetWeatherData = (props) => {
       .catch((err) => {
         console.log("Error occurred", err);
       });
-  }, []);
+  }, [timeString]);
 
   return (
     <div className="slider-container border-black rounded-sm my-8 ">
@@ -115,7 +126,7 @@ const GetWeatherData = (props) => {
             className="logo items-center mx-auto rounded-lg mb-2"
           />
           <p className="timestamp text-center text-lg font-bold text-yellow-300">
-            {getDate}
+            {timeString}
           </p>
           <p className="temperature text-center text-lg font-semibold mt-2  text-yellow-50">
             {temperatures[0]+"°C"}
