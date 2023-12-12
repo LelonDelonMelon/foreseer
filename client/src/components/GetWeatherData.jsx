@@ -6,6 +6,7 @@ import "slick-carousel/slick/slick-theme.css";
 import date from "../util/getUserTime";
 import sunnyGif from "../assets/icons8-sun.gif";
 import lightRainGif from "../assets/icons8-light-rain.gif";
+import GetTime from "./GetTime";
 
 const settings = {
   dots: false,
@@ -40,7 +41,6 @@ const settings = {
         slidesToShow: 1,
         slidesToScroll: 1,
         dots: false,
-
       },
     },
   ],
@@ -50,10 +50,9 @@ const GetWeatherData = (props) => {
   const [timeStamps, setTimeStamps] = useState([]); //96 values
   const [temperatures, setTemperatures] = useState([]); // 96 values
   const [userIndex, setUserIndex] = useState(0);
-  const [timeString,setUserTimeString] = useState("");
 
   const getDate = date;
-  console.log("Get date: ",getDate);
+  console.log("Get date: ", getDate);
   let userTimezone;
   if (
     typeof Intl !== "undefined" &&
@@ -66,7 +65,7 @@ const GetWeatherData = (props) => {
 
   let currentDate = new Date();
 
-  console.log("current time",currentDate);
+  console.log("current time", currentDate);
   const prettiedCurrentDate = currentDate.toISOString().slice(0, 10);
   let userTime = new Date();
   userTime.setTime(
@@ -78,24 +77,11 @@ const GetWeatherData = (props) => {
     timeZone: userTimezone,
   });
 
-  let userHour = parseInt(userTime.slice(0, 2));
-  let userMinute = parseInt(userTime.slice(3, 5));
   let userTimeString = userTime.slice(0, 5);
-
-
 
   //console.log(props.endDate, props.startDate);
 
-  useEffect (()=> {
-    const interval = setInterval(()=> setUserTimeString(getDate),1000);
-    return ()=> {
-      clearInterval(interval);
-    }
-  },[])
-
   useEffect(() => {
-    setUserTimeString(getDate)
-    console.log(" Timestr: ", timeString);
     axios
       .get(
         `http://localhost:3004/api/weather?startDate=${props.startDate}&endDate=${props.endDate}`
@@ -114,7 +100,7 @@ const GetWeatherData = (props) => {
       .catch((err) => {
         console.log("Error occurred", err);
       });
-  }, [timeString]);
+  }, []);
 
   return (
     <div className="slider-container border-black rounded-sm my-8 ">
@@ -125,11 +111,10 @@ const GetWeatherData = (props) => {
             alt="logo"
             className="logo items-center mx-auto rounded-lg mb-2"
           />
-          <p className="timestamp text-center text-lg font-bold text-yellow-300">
-            {timeString}
-          </p>
+          <GetTime />
+          <p className="timestamp text-center text-lg font-bold text-yellow-300"></p>
           <p className="temperature text-center text-lg font-semibold mt-2  text-yellow-50">
-            {temperatures[0]+"°C"}
+            {temperatures[0] + "°C"}
           </p>
         </div>
       )}
