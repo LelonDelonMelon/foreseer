@@ -6,6 +6,7 @@ import GetTime from "./components/GetTime";
 import ModalGeneric from "./components/Modal";
 const currentDate = new Date();
 
+
 const prettiedDate = currentDate.toISOString().slice(0, 10);
 const endDate = new Date(currentDate.getTime() + 7 * 24 * 60 * 60 * 1000)
   .toISOString()
@@ -33,6 +34,8 @@ const customStyles = {
 
 function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [tasks, setTasks] = useState([]);
+  const [urgency, setUrgency] = useState("");
 
   function openModal() {
     setIsModalOpen(true);
@@ -43,6 +46,17 @@ function App() {
   function afterOpenModal() {
     // references are now sync'd and can be accessed.
   }
+  function createTaskModal(taskProp){
+
+      const newTask = {
+        taskTitle: taskProp.title,
+        taskDetails: taskProp.description,
+        urgency: taskProp.urgency,
+      };
+      setTasks([...tasks, newTask]);
+      console.log("newTask: ", newTask);
+      closeModal();
+  }
 
   return (
     <div className="App bg-gray-400 min-h-screen overflow-x-hidden overflow-y-auto">
@@ -52,7 +66,7 @@ function App() {
         </div>
         <GetWeatherData startDate={prettiedDate} endDate={endDate} />
       </div>
-      <div className="relative h-32 w-32 grid grid-rows-2 gap-4">
+      <div className="relative h-32 w-32 grid grid-rows-4 gap-4">
         <button
           className="w-24 ml-5 bg-blue-500 text-white  -my-4 py-2   rounded hover:bg-blue-700 focus:outline-none focus:border-blue-700 focus:ring focus:ring-blue-200"
           onClick={openModal}
@@ -65,8 +79,20 @@ function App() {
           onRequestClose={closeModal}
           style={customStyles}
           contentLabel="Example Modal"
+          shouldCloseOnEsc = {true}
+          shouldReturnFocusAfterClose={true}
+          handleCreateTask = {createTaskModal}
+          setUrgency = {setUrgency}
+
         />
         <div className="flex flex-row w-screen gap-4 mr-5">
+          
+          {tasks && tasks.map((val, idx) => {
+
+
+            return <Task className="grid" taskDetails = {val.taskDetails} taskTitle = {val.taskTitle} urgency = {val.urgency} />
+          })}
+          
           <Task
             taskDetails=" Frontend:
             - Separate the admin panel from the login route.
