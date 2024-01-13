@@ -22,13 +22,12 @@ const customStyles = {
     height: "40%",
     marginRight: "-50%",
     transform: "translate(-50%, -50%)",
-    backgroundColor: "eee",
+    backgroundColor: "#f2dedc",
+
     // Other styles for the modal content
 
     // Overlay styles to make it darker
-    overlay: {
-      backgroundColor: "rgba(0, 0, 0, 0.5)", // Adjust the alpha value for darkness
-    },
+   
   },
 };
 
@@ -66,9 +65,9 @@ function App() {
         </div>
         <GetWeatherData startDate={prettiedDate} endDate={endDate} />
       </div>
-      <div className="relative h-32 w-32 grid grid-rows-4 gap-4">
+      <div className="relative h-32 w-32 grid grid-rows-4 ">
         <button
-          className="w-24 ml-5 bg-blue-500 text-white  -my-4 py-2   rounded hover:bg-blue-700 focus:outline-none focus:border-blue-700 focus:ring focus:ring-blue-200"
+          className="w-24 ml-5 bg-blue-500 text-white  -my-4 p-2   rounded hover:bg-blue-700 focus:outline-none focus:border-blue-700 focus:ring focus:ring-blue-200"
           onClick={openModal}
         >
           Add new task
@@ -85,12 +84,14 @@ function App() {
           setUrgency = {setUrgency}
 
         />
-        <div className="flex flex-row w-screen gap-4 mr-5">
+        <div className="grid grid-cols-2 gap-4 w-screen gap- ">
           
           {tasks && tasks.map((val, idx) => {
 
 
-            return <Task className="grid" taskDetails = {val.taskDetails} taskTitle = {val.taskTitle} urgency = {val.urgency} />
+            return <div className=""> 
+               <Task className=" " taskDetails = {val.taskDetails} taskTitle = {val.taskTitle} urgency = {val.urgency} />
+            </div>
           })}
           
           <Task
@@ -141,6 +142,7 @@ function App() {
           
           "
             taskTitle="Blog Fixes: "
+            urgency ="3"
           />
         </div>
         <footer className="absolute inset-x-0 bottom-0 h-16">

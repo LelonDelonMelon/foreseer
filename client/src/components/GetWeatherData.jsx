@@ -50,7 +50,12 @@ const GetWeatherData = (props) => {
   const [timeStamps, setTimeStamps] = useState([]); //96 values
   const [temperatures, setTemperatures] = useState([]); // 96 values
   const [userIndex, setUserIndex] = useState(0);
-
+  const logoStatus =  {
+    sunnyGif:0,
+    clearGif:1,
+    snowyGif:2,
+    windygif:3,
+  }
   const getDate = date;
   console.log("Get date: ", getDate);
   let userTimezone;

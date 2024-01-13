@@ -99,19 +99,21 @@ const ModalGeneric = (props) => {
             <UrgencyDropdown setUrgency={setUrgency} />
           </div>
         </form>
+    
         <button
-          className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
+          className="bg-blue-500 text-white py-2 px-4 mr-4 rounded hover:bg-blue-600"
           onClick={props.onRequestClose}
         >
           Close
         </button>
         {/* Centered Create Task button */}
         <button
-          className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 mx-auto"
+          className="bg-blue-500 text-white py-2 px-4 mr-4 rounded hover:bg-blue-600 mx-auto"
           onClick={handleCreateTask}
         >
           Create Task
         </button>
+    
       </Modal>
     </div>
   );
