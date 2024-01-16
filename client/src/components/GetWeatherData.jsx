@@ -6,6 +6,9 @@ import "slick-carousel/slick/slick-theme.css";
 import date from "../util/getUserTime";
 import sunnyGif from "../assets/icons8-sun.gif";
 import lightRainGif from "../assets/icons8-light-rain.gif";
+import lightSnowGif from "../assets/icons8-light-snow.gif";
+import tsGif from "../assets/icons8-thunderstorm.gif";
+
 import GetTime from "./GetTime";
 
 const settings = {
@@ -45,17 +48,81 @@ const settings = {
     },
   ],
 };
+const wmoCodes = {
+  clearGif: 0,
+  partlyCloudyGif: 2,
+  foggyGif: 45,
+  drizzleGif: 51,
+  freezingDrizzleGif: 56,
+  slightRainyGif: 61,
+  moderateRainyGif: 63,
+  heavyRainGif: 65,
+  slightSnowyGif: 71,
+  moderateSnowyGif: 73,
+  heavySnowyGif: 75,
+  slightRainShowersGif: 80,
+  moderateRainShowerGif: 81,
+  heavyRainShowerGif: 82,
+  slightSnowShower: 85,
+  heavySnowShower: 86,
+  thunderstormGif: 95,
+};
+
+const getWeatherGif = (code) => {
+  switch (code) {
+    case wmoCodes.clearGif:
+      console.log("Got: ", code);
+      return sunnyGif;
+    case wmoCodes.partlyCloudyGif:
+      // return the appropriate GIF for partly cloudy
+      console.log("Got: ", code);
+      return sunnyGif;
+      
+    case wmoCodes.foggyGif:
+      console.log("Got: ", code);
+      // return the appropriate GIF for foggy
+      return sunnyGif;
+    // Add cases for other weather codes
+    case wmoCodes.drizzleGif:
+        return sunnyGif;
+    case wmoCodes.freezingDrizzleGif:
+        return sunnyGif;
+    case wmoCodes. slightRainyGif:
+        return lightRainGif;
+    case wmoCodes.moderateRainyGif:
+        return lightRainGif;
+    case wmoCodes.heavyRainGif:
+        return lightRainGif;
+    case wmoCodes.slightSnowyGif:
+        return lightSnowGif;
+    case wmoCodes.moderateSnowyGif:
+        return lightSnowGif;
+    case wmoCodes.heavySnowyGif:
+        return lightSnowGif;
+    case wmoCodes.slightRainShowersGif:
+        return lightRainGif;
+    case wmoCodes.moderateRainShowerGif:
+        return lightRainGif;
+    case wmoCodes.heavyRainShowerGif:
+        return lightRainGif;
+    case wmoCodes.slightSnowShower:
+        return lightSnowGif;
+    case wmoCodes.heavySnowShower:
+        return lightSnowGif;
+    case wmoCodes.thunderstormGif:
+        return tsGif;
+    default:
+      // return a default GIF or handle unknown codes
+        return sunnyGif;
+      break;
+  }
+};
 
 const GetWeatherData = (props) => {
   const [timeStamps, setTimeStamps] = useState([]); //96 values
   const [temperatures, setTemperatures] = useState([]); // 96 values
   const [userIndex, setUserIndex] = useState(0);
-  const logoStatus =  {
-    sunnyGif:0,
-    clearGif:1,
-    snowyGif:2,
-    windygif:3,
-  }
+  const [weatherCodes, setWeatherCodes] = useState([]);
   const getDate = date;
   console.log("Get date: ", getDate);
   let userTimezone;
@@ -94,6 +161,10 @@ const GetWeatherData = (props) => {
       .then((response) => {
         const temperatures = response.data.hourly.temperature_2m;
         setTemperatures(temperatures);
+        const weatherCode = response.data.hourly.weathercode;
+        setWeatherCodes(weatherCode);
+
+        
 
         const timeStamps = response.data.hourly.time.map((time) => {
           const [date, timeStr] = time.split("T");
@@ -112,7 +183,7 @@ const GetWeatherData = (props) => {
       {props.startDate === prettiedCurrentDate && (
         <div className="current-weather">
           <img
-            src={sunnyGif}
+            src={getWeatherGif(weatherCodes[0])}
             alt="logo"
             className="logo items-center mx-auto rounded-lg mb-2"
           />
@@ -129,7 +200,7 @@ const GetWeatherData = (props) => {
           return (
             <div key={idx} className="slide ml-4 mt-10 mb-10">
               <img
-                src={lightRainGif}
+                src={getWeatherGif(weatherCodes[idx])}
                 alt="logo"
                 className="logo items-center mx-auto rounded-xl"
               />
