@@ -14,7 +14,8 @@ class Weather {
       )
       .then((response) => {
         data = response.data;
-        console.log(data);
+        //console.log(data);
+        //console.log(data.hourly.weathercode);
         //console.log("Temperature data for 04-04-2023",data.hourly.time[0],data.hourly.temperature_2m[0]);
         res.json(data);
       })
