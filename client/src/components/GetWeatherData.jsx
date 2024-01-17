@@ -15,8 +15,8 @@ const settings = {
   dots: false,
   infinite: false,
   speed: 600,
-  slidesToShow: 11,
-  slidesToScroll: 4,
+  slidesToShow: 6,
+  slidesToScroll: 6,
   centerMode: false,
   centerPadding: "120px",
   responsive: [
@@ -49,40 +49,34 @@ const settings = {
   ],
 };
 const wmoCodes = {
-  clearGif: 0,
+  clearGif: 0 || 1,
   partlyCloudyGif: 2,
-  foggyGif: 45,
-  drizzleGif: 51,
-  freezingDrizzleGif: 56,
+  foggyGif: 45|| 48,
+  drizzleGif: 51 || 53 || 55,
+  freezingDrizzleGif: 56 || 57,
   slightRainyGif: 61,
   moderateRainyGif: 63,
-  heavyRainGif: 65,
+  heavyRainGif: 65 || 66 || 67,
   slightSnowyGif: 71,
   moderateSnowyGif: 73,
-  heavySnowyGif: 75,
+  heavySnowyGif: 75 || 77,
   slightRainShowersGif: 80,
   moderateRainShowerGif: 81,
   heavyRainShowerGif: 82,
   slightSnowShower: 85,
   heavySnowShower: 86,
-  thunderstormGif: 95,
+  thunderstormGif: 95 || 96 || 99,
 };
 
 const getWeatherGif = (code) => {
   switch (code) {
     case wmoCodes.clearGif:
-      console.log("Got: ", code);
       return sunnyGif;
     case wmoCodes.partlyCloudyGif:
-      // return the appropriate GIF for partly cloudy
-      console.log("Got: ", code);
       return sunnyGif;
-      
     case wmoCodes.foggyGif:
       console.log("Got: ", code);
-      // return the appropriate GIF for foggy
       return sunnyGif;
-    // Add cases for other weather codes
     case wmoCodes.drizzleGif:
         return sunnyGif;
     case wmoCodes.freezingDrizzleGif:
@@ -112,9 +106,7 @@ const getWeatherGif = (code) => {
     case wmoCodes.thunderstormGif:
         return tsGif;
     default:
-      // return a default GIF or handle unknown codes
         return sunnyGif;
-      break;
   }
 };
 
@@ -151,7 +143,6 @@ const GetWeatherData = (props) => {
 
   let userTimeString = userTime.slice(0, 5);
 
-  //console.log(props.endDate, props.startDate);
 
   useEffect(() => {
     axios
@@ -197,6 +188,9 @@ const GetWeatherData = (props) => {
       <Slider {...settings}>
         {timeStamps.map((value, idx) => {
           if (idx === 0) return null; // skip the first value as we have already displayed it
+          const dateSplit = value.split(" ")[0];
+
+          const timeSplit = value.split(" ")[1];
           return (
             <div key={idx} className="slide ml-4 mt-10 mb-10">
               <img
@@ -204,10 +198,17 @@ const GetWeatherData = (props) => {
                 alt="logo"
                 className="logo items-center mx-auto rounded-xl"
               />
-              <p className="timestamp text-center">
-                {userIndex === idx ? userTimeString : value}
+              <p className="timestamp text-center text-white  pt-2">
+         
+                {/* {userIndex === idx ? <span className="text-yellow-500">{userTimeString}</span> : <span>{value}</span>} */}
+                <span className="text-yellow-200">
+                  {dateSplit}
+                </span>
+                <span className="block text-gray-200">
+                  {timeSplit}
+                </span>
               </p>
-              <p className="temperature text-center ">{temperatures[idx]} °C</p>
+              <p className="temperature text-center text-gray-400 ">{temperatures[idx]} °C</p>
             </div>
           );
         })}
