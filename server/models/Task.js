@@ -5,7 +5,7 @@ const taskScheme = new mongo.Schema(
     title: {
       type: String,
     },
-    details: {
+    description: {
       type: String,
       trim: true,
     },

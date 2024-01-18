@@ -1,6 +1,6 @@
 const BaseService = require("./BaseService");
 
-const task = require("../models/task");
+const task = require("../models/Task.js");
 
 class TaskService extends BaseService {
   constructor() {
